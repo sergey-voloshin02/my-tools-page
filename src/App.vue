@@ -3,40 +3,36 @@
     <nav class="navbar">
       <div class="navbar-brand">DevTools</div>
       <ul class="navbar-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><router-link to="/json-validator">JSON Validator</router-link></li>
+        <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
+        <li><router-link to="/token-generator">Token Generator</router-link></li>
       </ul>
     </nav>
 
     <div class="main-container">
       <aside class="left-menu">
         <ul>
-          <li><a href="#">JSON Validator</a></li>
-          <li><a href="#">UUID Generator</a></li>
-          <li><a href="#">Token Generator</a></li>
+          <li><router-link to="/json-validator">JSON Validator</router-link></li>
+          <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
+          <li><router-link to="/token-generator">Token Generator</router-link></li>
         </ul>
       </aside>
 
       <main class="content">
-        <JSONValidator />
+        <router-view></router-view> <!-- Здесь будет отображаться контент -->
       </main>
     </div>
   </div>
 </template>
 
 <script>
-import JSONValidator from './components/JSONValidator.vue';
-
 export default {
-  components: {
-    JSONValidator,
-  },
+  name: 'App',
 };
 </script>
 
 <style scoped>
-/* Navbar styles */
+/* Оставляем стили такие же */
 .navbar {
   background-color: #333;
   color: white;
@@ -73,10 +69,9 @@ export default {
   border-radius: 5px;
 }
 
-/* Layout styles */
 .main-container {
   display: flex;
-  height: calc(100vh - 50px); /* Высота экрана минус высота navbar */
+  height: calc(100vh - 50px);
 }
 
 .left-menu {
@@ -106,7 +101,6 @@ export default {
   color: #007bff;
 }
 
-/* Content area */
 .content {
   flex: 1;
   padding: 20px;
