@@ -30,7 +30,7 @@ const routes = [
     path: '/lorem-ipsum-generator',
     name: 'LoremIpsumGenerator',
     component: LoremIpsumGenerator,
-  },
+  }
 ];
 
 // Создаем маршрутизатор

@@ -11,12 +11,15 @@
     "@codemirror/basic-setup": "^0.20.0",
     "@codemirror/fold": "^0.19.4",
     "@codemirror/lang-json": "^6.0.1",
+    "@mdi/font": "^7.4.47",
+    "@nuxt/ui": "^2.18.4",
     "@vueform/slider": "^2.1.10",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-range-slider": "^0.6.0",
     "vue-router": "^4.0.13",
-    "vue-toggles": "^2.1.0"
+    "vue-toggles": "^2.1.0",
+    "vuetify": "^3.7.0-beta.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -32,7 +35,9 @@
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^4.0.0",
     "vue-loader": "^17.4.2",
-    "vue-template-compiler": "^2.7.16"
+    "vue-template-compiler": "^2.7.16",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   },
   "eslintConfig": {
     "root": true,
