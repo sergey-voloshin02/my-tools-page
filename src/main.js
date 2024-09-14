@@ -1,7 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
-const app = createApp(App)
-app.use(vuetify)
-app.mount('#app')
+const app = createApp(App);
+
+app.use(router); // Подключаем маршрутизатор
+app.mount('#app'); // Монтируем приложение

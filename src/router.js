@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import JSONValidator from './components/JSONValidator.vue';
 import UUIDGenerator from './components/UUIDGenerator.vue';
 import TokenGenerator from './components/TokenGenerator.vue';
-import LoremIpsumGenerator from './components/LoremIpsumGenerator.vue';
 
 // Определяем маршруты
 const routes = [
@@ -25,11 +24,6 @@ const routes = [
     path: '/token-generator',
     name: 'TokenGenerator',
     component: TokenGenerator,
-  },
-  {
-    path: '/lorem-ipsum-generator',
-    name: 'LoremIpsumGenerator',
-    component: LoremIpsumGenerator,
   }
 ];
 
