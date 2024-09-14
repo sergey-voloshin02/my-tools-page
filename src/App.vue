@@ -15,6 +15,7 @@
           <li><router-link to="/json-validator">JSON Validator</router-link></li>
           <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
           <li><router-link to="/token-generator">Token Generator</router-link></li>
+          <li><router-link to="/lorem-ipsum-generator">Lorem ipsum generator</router-link></li>
         </ul>
       </aside>
 
