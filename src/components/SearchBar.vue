@@ -1,39 +1,38 @@
 <template>
-    <div v-if="isActive" class="search-overlay" @click.self="closeSearch">
-      <div class="search-container">
-        <transition name="slide-fade">
-          <div class="search-bar">
-            <input
-              ref="searchInput"
-              type="text"
-              v-model="query"
-              @input="performSearch"
-              placeholder="Type to search a tool or a command..."
-              @keydown.esc="closeSearch"
-            />
-            <button @click="closeSearch" class="close-btn">X</button>
-          </div>
-        </transition>
-        <transition name="slide-fade">
-          <div class="search-results" v-if="results.length">
-            <ul>
-              <li
-                v-for="result in results"
-                :key="result.name"
-                class="search-result"
-                @click="navigateTo(result.path)"
-              >
-                <div class="result-icon">
-                  <i class="fas fa-cog"></i>
-                </div>
-                <div class="result-info">
-                  <div class="result-name">{{ result.name }}</div>
-                  <div class="result-description">{{ result.description }}</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </transition>
+    <div v-if="isRendered" class="search-overlay" @click.self="closeSearch" :class="{'fade-in': isActive, 'fade-out': !isActive}">
+      <div class="search-container" :class="{'animated-search-bar': isActive, 'animated-search-bar-leave': !isActive}">
+        <div class="search-bar">
+          <input
+            ref="searchInput"
+            type="text"
+            v-model="query"
+            @input="performSearch"
+            placeholder="Type to search a tool or a command..."
+            @keydown.esc="closeSearch"
+            @keydown.down="moveDown"
+            @keydown.up="moveUp"
+            @keydown.enter="selectActiveResult"
+          />
+          <button @click="closeSearch" class="close-btn">X</button>
+        </div>
+        <div class="search-results" v-if="results.length">
+          <ul>
+            <li
+              v-for="(result, index) in results"
+              :key="result.name"
+              :class="{ 'search-result': true, active: index === activeIndex }"
+              @click="navigateTo(result.path)"
+            >
+              <div class="result-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <div class="result-info">
+                <div class="result-name">{{ result.name }}</div>
+                <div class="result-description">{{ result.description }}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </template>
@@ -43,8 +42,10 @@
     data() {
       return {
         isActive: false,
+        isRendered: false,
         query: '',
         results: [],
+        activeIndex: 0,
         tools: [
           {
             name: 'JSON Validator',
@@ -56,47 +57,59 @@
             name: 'UUID Generator',
             path: '/uuid-generator',
             description: 'Generate universally unique identifiers (UUIDs).',
-            keywords: ['uuid', 'идентификатор', 'генератор'],
+            keywords: ['uuid', 'generator', 'идентификатор', 'генератор'],
           },
           {
             name: 'Token Generator',
             path: '/token-generator',
             description: 'Generate random tokens for your applications.',
-            keywords: ['token', 'токен', 'генератор', 'строка'],
+            keywords: ['token', 'generator', 'токен', 'генератор', 'строка'],
           },
         ],
       };
     },
     methods: {
       openSearch() {
+        this.isRendered = true;
         this.isActive = true;
         this.$nextTick(() => {
-          // Устанавливаем фокус на поле ввода
           this.$refs.searchInput.focus();
         });
-        document.addEventListener('click', this.closeSearchOnClickOutside);
       },
       closeSearch() {
         this.isActive = false;
-        this.query = '';
-        this.results = [];
-        document.removeEventListener('click', this.closeSearchOnClickOutside);
-      },
-      closeSearchOnClickOutside(event) {
-        const searchContainer = this.$refs.searchContainer;
-        if (searchContainer && !searchContainer.contains(event.target)) {
-          this.closeSearch();
-        }
-      },
-      navigateTo(path) {
-        this.$router.push(path);
-        this.closeSearch();
+        setTimeout(() => {
+          this.isRendered = false;
+          this.query = '';
+          this.results = [];
+          this.activeIndex = 0;
+        }, 200); // Задержка перед удалением из DOM
       },
       performSearch() {
         const queryLower = this.query.toLowerCase();
         this.results = this.tools.filter((tool) =>
           tool.keywords.some((keyword) => keyword.toLowerCase().includes(queryLower))
         );
+        this.activeIndex = 0;
+      },
+      navigateTo(path) {
+        this.$router.push(path);
+        this.closeSearch();
+      },
+      moveDown() {
+        if (this.activeIndex < this.results.length - 1) {
+          this.activeIndex++;
+        }
+      },
+      moveUp() {
+        if (this.activeIndex > 0) {
+          this.activeIndex--;
+        }
+      },
+      selectActiveResult() {
+        if (this.results[this.activeIndex]) {
+          this.navigateTo(this.results[this.activeIndex].path);
+        }
       },
       handleKeydown(event) {
         if (event.altKey && event.code === 'KeyK') {
@@ -116,12 +129,60 @@
   
   <style scoped>
   /* Анимация появления и исчезновения */
-  .slide-fade-enter-active, .slide-fade-leave-active {
-    transition: all 0.4s ease;
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  .slide-fade-enter, .slide-fade-leave-to {
-    transform: translateY(-10px);
-    opacity: 0;
+  
+  @keyframes slideUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  }
+  
+  .animated-search-bar {
+    animation: slideDown 0.4s ease forwards;
+  }
+  
+  .animated-search-bar-leave {
+    animation: slideUp 0.4s ease forwards;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.4s ease forwards;
   }
   
   .search-overlay {
@@ -130,12 +191,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
   }
   
   .search-container {
-    margin-top: 100px; /* Опустили поиск чуть ниже */
+    margin-top: 100px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -201,16 +261,18 @@
     align-items: center;
     border-bottom: 1px solid #444;
     cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
   
-  .search-result:hover {
+  .search-result:hover, .search-result.active {
     background-color: #444;
+    transform: scale(1.01);
   }
   
   .result-icon {
     margin-right: 10px;
     font-size: 20px;
-    color: #0fbf3a; /* Иконки могут быть разного цвета */
+    color: #0fbf3a;
   }
   
   .result-info {
