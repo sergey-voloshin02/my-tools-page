@@ -2,12 +2,20 @@
   <div>
     <nav class="navbar">
       <div class="navbar-brand">DevTools</div>
-      <ul class="navbar-links">
-        <li><router-link to="/json-validator">JSON Validator</router-link></li>
-        <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
-        <li><router-link to="/token-generator">Token Generator</router-link></li>
-      </ul>
+      <div class="search-hint">
+        <!-- Строка поиска с иконкой лупы -->
+        <div class="search-input">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            placeholder="Press Alt+K or click here to search..." 
+            @focus="openSearch" 
+          />
+        </div>
+      </div>
     </nav>
+
+    <SearchBar ref="searchBar" /> <!-- Добавляем ref на компонент поиска -->
 
     <div class="main-container">
       <aside class="left-menu">
@@ -26,13 +34,24 @@
 </template>
 
 <script>
+import SearchBar from './components/SearchBar.vue';
+
 export default {
   name: 'App',
+  components: {
+    SearchBar,
+  },
+  methods: {
+    openSearch() {
+      // Открываем поиск при клике на инпут через ref компонента
+      this.$refs.searchBar.openSearch();
+    },
+  },
 };
 </script>
 
 <style scoped>
-/* Оставляем стили такие же */
+/* Навбар и элементы поиска */
 .navbar {
   background-color: #333;
   color: white;
@@ -46,29 +65,38 @@ export default {
   font-size: 24px;
 }
 
-.navbar-links {
-  list-style: none;
+.search-hint {
+  margin-left: auto;
+}
+
+.search-input {
   display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-links li {
-  margin-left: 20px;
-}
-
-.navbar-links a {
-  color: white;
-  text-decoration: none;
-  padding: 5px 10px;
-  transition: background-color 0.3s;
-}
-
-.navbar-links a:hover {
-  background-color: #555;
+  align-items: center;
+  width: 50%; /* Строка поиска занимает половину ширины */
+  background-color: #444;
   border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  color: white;
 }
 
+.search-input i {
+  margin-right: 10px;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  color: white;
+}
+
+.search-input input::placeholder {
+  color: #888;
+}
+
+/* Основные стили для макета страницы */
 .main-container {
   display: flex;
   height: calc(100vh - 50px);
