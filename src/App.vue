@@ -1,24 +1,15 @@
 <template>
   <div>
-    <nav class="navbar">
-      <div class="navbar-brand">DevTools</div>
-      <div class="search-hint">
-        <!-- Строка поиска с иконкой лупы -->
-        <div class="search-input">
-          <i class="fas fa-search"></i>
-          <input 
-            type="text" 
-            placeholder="Press Alt+K or click here to search..." 
-            @focus="openSearch" 
-          />
-        </div>
-      </div>
-    </nav>
+    <!-- Навбар вынесен в отдельный компонент -->
+    <MainNavbar @open-search="openSearch" @toggle-menu="toggleMenu" />
 
-    <SearchBar ref="searchBar" /> <!-- Добавляем ref на компонент поиска -->
+    <!-- Компонент поиска -->
+    <SearchBar ref="searchBar" />
 
+    <!-- Основной контейнер -->
     <div class="main-container">
-      <aside class="left-menu">
+      <!-- Левое меню -->
+      <aside class="left-menu" v-if="isMenuVisible">
         <ul>
           <li><router-link to="/json-validator">JSON Validator</router-link></li>
           <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
@@ -26,80 +17,115 @@
         </ul>
       </aside>
 
+      <!-- Контент -->
       <main class="content">
-        <router-view></router-view> <!-- Здесь будет отображаться контент -->
+        <router-view></router-view>
       </main>
     </div>
   </div>
 </template>
 
 <script>
+// Импортируем компоненты
+import MainNavbar from './components/Navbar.vue';
 import SearchBar from './components/SearchBar.vue';
 
 export default {
   name: 'App',
   components: {
+    MainNavbar, // Регистрируем MainNavbar
     SearchBar,
+  },
+  data() {
+    return {
+      isMenuVisible: true, // Управляем видимостью левого меню
+    };
   },
   methods: {
     openSearch() {
-      // Открываем поиск при клике на инпут через ref компонента
+      // Открываем компонент поиска через его ref
       this.$refs.searchBar.openSearch();
+    },
+    toggleMenu() {
+      // Скрываем или показываем левое меню
+      this.isMenuVisible = !this.isMenuVisible;
     },
   },
 };
 </script>
 
 <style scoped>
-/* Навбар и элементы поиска */
+/* Стили для навбара и страницы */
 .navbar {
   background-color: #333;
   color: white;
-  padding: 10px;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.navbar-brand {
-  font-size: 24px;
-}
-
-.search-hint {
-  margin-left: auto;
-}
-
-.search-input {
+.navbar .navbar-left,
+.navbar .navbar-right {
   display: flex;
   align-items: center;
-  width: 50%; /* Строка поиска занимает половину ширины */
-  background-color: #444;
-  border-radius: 5px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  color: white;
 }
 
-.search-input i {
-  margin-right: 10px;
-}
-
-.search-input input {
-  width: 100%;
-  padding: 5px;
+.navbar .home-btn,
+.navbar .menu-btn,
+.navbar .theme-btn {
+  background: none;
   border: none;
-  background-color: transparent;
   color: white;
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 20px;
 }
 
-.search-input input::placeholder {
+.navbar .home-btn i,
+.navbar .menu-btn i,
+.navbar .theme-btn i {
+  font-size: 20px;
+}
+
+.navbar .search-container {
+  display: flex;
+  flex-grow: 1;
+  max-width: 500px;
+  position: relative;
+}
+
+.navbar .search-container input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #444;
+  color: white;
+  outline: none;
+}
+
+.navbar .search-container .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #888;
+}
+
+.navbar-right select {
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px;
+  margin-right: 10px;
 }
 
 /* Основные стили для макета страницы */
 .main-container {
   display: flex;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 50px); /* Высота экрана минус высота навбара */
 }
 
 .left-menu {
@@ -132,5 +158,29 @@ export default {
 .content {
   flex: 1;
   padding: 20px;
+  background-color: #fff;
+}
+
+/* Темный режим */
+.dark-mode {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.dark-mode .left-menu {
+  background-color: #333;
+  border-right-color: #444;
+}
+
+.dark-mode .left-menu a {
+  color: #ddd;
+}
+
+.dark-mode .left-menu a:hover {
+  color: #fff;
+}
+
+.dark-mode .content {
+  background-color: #2c2c2c;
 }
 </style>

@@ -112,7 +112,7 @@
         }
       },
       handleKeydown(event) {
-        if (event.altKey && event.code === 'KeyK') {
+        if ((event.altKey && event.code === 'KeyK') || (event.metaKey && event.code === 'KeyK')) {
           event.preventDefault();
           this.openSearch();
         }
