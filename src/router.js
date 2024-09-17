@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import JSONValidator from './components/JSONValidator.vue';
 import UUIDGenerator from './components/UUIDGenerator.vue';
 import TokenGenerator from './components/TokenGenerator.vue';
+import HomePage from '@/components/HomePage.vue';
 
 // Определяем маршруты
 const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/json-validator',
+    component: HomePage
   },
   {
     path: '/json-validator',
