@@ -1,23 +1,36 @@
 <template>
-  <div>
-    <MainNavbar @open-search="openSearch" @toggle-menu="toggleMenu" />
+  <div class="app-layout">
+    <!-- Левое меню с логотипом -->
+    <aside class="left-menu" :class="{ 'collapsed': !isMenuVisible }">
+      <div class="logo">DevTools</div> <!-- Логотип -->
+      <ul>
+        <li><router-link to="/json-validator">JSON Validator</router-link></li>
+        <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
+        <li><router-link to="/token-generator">Token Generator</router-link></li>
+      </ul>
+    </aside>
 
-    <SearchBar ref="searchBar" />
+    <!-- Основной контент -->
+    <main class="content">
+      <header class="content-header">
+        <!-- Кнопка закрытия левого меню и кнопка Home -->
+        <button @click="toggleMenu" class="menu-toggle">
+          <i class="fas fa-bars"></i> <!-- Иконка открытия/закрытия меню -->
+        </button>
+        <router-link to="/" class="home-btn">
+          <i class="fas fa-home"></i>
+        </router-link>
+        <MainNavbar @open-search="openSearch" />
+      </header>
 
-    <div class="main-container" :class="{ 'menu-hidden': !isMenuVisible }">
-      <!-- Левое меню без логотипа -->
-      <aside class="left-menu" v-if="isMenuVisible">
-        <ul>
-          <li><router-link to="/json-validator">JSON Validator</router-link></li>
-          <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
-          <li><router-link to="/token-generator">Token Generator</router-link></li>
-        </ul>
-      </aside>
+      <!-- Компонент поиска -->
+      <SearchBar ref="searchBar" />
 
-      <main class="content">
-        <router-view></router-view>
-      </main>
-    </div>
+      <!-- Основное содержимое -->
+      <div class="content-body">
+        <router-view />
+      </div>
+    </main>
   </div>
 </template>
 
@@ -33,7 +46,7 @@ export default {
   },
   data() {
     return {
-      isMenuVisible: true,
+      isMenuVisible: true, // Управляем видимостью меню
     };
   },
   methods: {
@@ -41,20 +54,8 @@ export default {
       this.$refs.searchBar.openSearch();
     },
     toggleMenu() {
-      this.isMenuVisible = !this.isMenuVisible; // Переключаем видимость меню
+      this.isMenuVisible = !this.isMenuVisible; // Переключение видимости меню
     },
-    closeMenu() {
-      this.isMenuVisible = false; // Закрываем меню на мобильных устройствах
-    },
-  },
-  mounted() {
-    window.addEventListener('resize', () => {
-      if (window.innerWidth <= 768) {
-        this.isMenuVisible = false; // Автоматически закрываем меню на мобильных устройствах
-      } else {
-        this.isMenuVisible = true; // Отображаем меню на большом экране
-      }
-    });
   },
 };
 </script>
@@ -71,19 +72,26 @@ body {
 main {
   background-color: #222;
 }
-
-.main-container {
+/* Основная структура */
+.app-layout {
   display: flex;
-  height: calc(100vh - 50px);
-  transition: margin-left 0.3s ease;
+  height: 100vh;
 }
 
+/* Левое меню */
 .left-menu {
-  background-color: #f4f4f4;
-  width: 200px;
+  background-color: #333;
+  color: white;
+  width: 190px;
   padding: 20px;
-  border-right: 1px solid #ddd;
-  transition: transform 0.3s ease;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.left-menu.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .left-menu ul {
@@ -91,55 +99,94 @@ main {
   padding: 0;
 }
 
-.left-menu li {
-  margin-bottom: 10px;
+.left-menu ul li {
+  margin-bottom: 15px;
 }
 
-.left-menu a {
+.left-menu ul li a {
+  color: white;
   text-decoration: none;
-  color: #333;
-  /* font-weight: bold; */
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
-.left-menu a:hover {
+.left-menu ul li a:hover {
   color: #007bff;
 }
 
-.content {
-  flex: 1;
-  transition: margin-left 0.3s ease;
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-/* Мобильная версия */
+/* Основной контент */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Шапка контента */
+.content-header {
+  display: flex;
+  align-items: center;
+  background-color: #222;
+  padding: 10px 20px;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.menu-toggle:hover {
+  color: #007bff;
+}
+
+.home-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.home-btn:hover {
+  color: #007bff;
+}
+
+/* Основная часть контента */
+.content-body {
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: white;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
   .left-menu {
     position: fixed;
-    left: -200px;
+    left: -250px;
     top: 0;
     height: 100%;
     z-index: 999;
-    transition: transform 0.3s ease;
   }
 
-  .main-container.menu-hidden .left-menu {
-    transform: translateX(-100%);
+  .left-menu.collapsed {
+    left: 0;
   }
 
-  .main-container.menu-hidden .content {
+  .content {
     margin-left: 0;
   }
-}
-
-.left-menu.collapsed {
-  transform: translateX(-100%);
-}
-
-.menu-hidden .left-menu {
-  transform: translateX(-100%);
-}
-
-.menu-hidden .content {
-  margin-left: 0;
 }
 </style>
