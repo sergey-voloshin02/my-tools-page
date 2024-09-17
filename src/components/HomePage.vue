@@ -4,9 +4,13 @@
       <h1>All the tools</h1>
       <div class="tool-grid">
         <div class="tool-card" v-for="tool in tools" :key="tool.title">
-          <h3>
-            <font-awesome-icon :icon="tool.icon" /> {{ tool.title }}
-          </h3>
+          <div class="tool-card-header">
+            <font-awesome-icon :icon="tool.icon" class="tool-icon" />
+            <span class="favorite-icon">
+              <font-awesome-icon :icon="['fas', 'heart']" />
+            </span>
+          </div>
+          <h3>{{ tool.title }}</h3>
           <p>{{ tool.description }}</p>
         </div>
       </div>
@@ -56,13 +60,39 @@ export default {
   background-color: #2a2a2a;
   padding: 20px;
   border-radius: 8px;
+  position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.tool-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tool-icon {
+  font-size: 24px;
+  color: #ccc;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+  color: #666;
+}
+
+.favorite-icon:hover {
+  color: #f44336;
+  cursor: pointer;
 }
 
 .tool-card h3 {
   font-size: 18px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   color: #fff;
 }
 
@@ -72,6 +102,6 @@ export default {
 }
 
 .tool-card:hover {
-  border: 1px solid #007bff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 </style>
