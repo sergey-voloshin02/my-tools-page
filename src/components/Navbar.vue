@@ -2,15 +2,15 @@
     <nav class="navbar">
       <!-- Левая часть навбара -->
       <div class="navbar-left">
-        <!-- Кнопка "Home" -->
-        <router-link to="/" class="home-btn">
-          <i class="fas fa-home"></i>
-        </router-link>
-  
         <!-- Кнопка для скрытия/показа левого меню -->
         <button @click="toggleMenu" class="menu-btn">
           <i class="fas fa-bars"></i>
         </button>
+  
+        <!-- Кнопка "Home" -->
+        <router-link to="/home" class="home-btn">
+          <i class="fas fa-home"></i>
+        </router-link>
       </div>
   
       <!-- Строка поиска -->
@@ -86,7 +86,7 @@
   .home-btn {
     color: white;
     text-decoration: none;
-    margin-right: 20px;
+    margin-left: 20px;
   }
   
   .menu-btn {

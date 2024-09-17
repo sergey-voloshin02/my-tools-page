@@ -156,13 +156,13 @@
       background-color: rgba(0, 0, 0, 0);
     }
     to {
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.5);
     }
   }
   
   @keyframes fadeOut {
     from {
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.5);
     }
     to {
       background-color: rgba(0, 0, 0, 0);
@@ -206,7 +206,7 @@
   
   .search-bar {
     background: #2b2b2b;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -222,6 +222,7 @@
     background-color: #444;
     color: white;
     border-radius: 5px;
+    font-size: 18px;
   }
   
   .search-bar input::placeholder {
