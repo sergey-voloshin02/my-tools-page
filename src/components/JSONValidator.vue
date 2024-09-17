@@ -1,6 +1,6 @@
 <template>
   <div class="json-validator">
-    <h2>JSON Validator</h2>
+    <h4 style="display:flex">To format and validate your JSON, just copy + paste it below:</h4>
     <div class="textarea-wrapper">
       <div class="line-numbers" ref="lineNumbers"></div>
       <textarea v-model="jsonInput" @input="updateLineNumbers" ref="textarea" placeholder="Paste your JSON here..."

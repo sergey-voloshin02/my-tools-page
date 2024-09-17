@@ -5,9 +5,8 @@
     <SearchBar ref="searchBar" />
 
     <div class="main-container">
-      <!-- Левое меню с логотипом -->
+      <!-- Левое меню без логотипа -->
       <aside class="left-menu" v-if="isMenuVisible">
-        <div class="logo">DevTools</div> <!-- Логотип -->
         <ul>
           <li><router-link to="/json-validator">JSON Validator</router-link></li>
           <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
@@ -34,7 +33,7 @@ export default {
   },
   data() {
     return {
-      isMenuVisible: true, // Управляем видимостью левого меню
+      isMenuVisible: true,
     };
   },
   methods: {
@@ -42,14 +41,25 @@ export default {
       this.$refs.searchBar.openSearch();
     },
     toggleMenu() {
-      this.isMenuVisible = !this.isMenuVisible; // Скрываем/показываем меню
+      const leftMenu = document.querySelector('.left-menu');
+      leftMenu.classList.toggle('collapsed');
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 * {
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  font-family: 'Poppins', sans-serif;
+}
+
+input,
+select,
+textarea {
   font-family: 'Poppins', sans-serif;
 }
 
@@ -63,11 +73,6 @@ export default {
   width: 200px;
   padding: 20px;
   border-right: 1px solid #ddd;
-}
-
-.left-menu .logo {
-  font-size: 24px;
-  margin-bottom: 20px;
 }
 
 .left-menu ul {
@@ -92,6 +97,20 @@ export default {
 
 .content {
   flex: 1;
-  padding: 20px;
 }
+
+.left-menu {
+  background-color: #f4f4f4;
+  width: 200px;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  transition: width 0.3s ease;
+}
+
+.left-menu.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 </style>
