@@ -1,33 +1,40 @@
 <template>
   <div class="uuid-generator">
-    <h2>UUIDs Generator</h2>
+    <h2>UUIDs generator</h2>
+    <p class="description">
+      A Universally Unique Identifier (UUID) is a 128-bit number used to identify information in computer systems.
+      The number of possible UUIDs is 2<sup>128</sup> or about 3.4×10^38 (which is a lot!).
+    </p>
 
     <div class="version-selection">
-      <span>UUIDs version:</span>
+      <span>UUID version</span>
       <button
         v-for="version in versions"
         :key="version"
         @click="setUUIDVersion(version)"
         :class="{ active: version === uuidVersion }"
+        class="btn version-btn"
       >
         {{ version }}
       </button>
     </div>
 
     <div class="quantity-selection">
-      <span>Quantity:</span>
-      <input v-model.number="uuidCount" readonly />
-      <div class="quantity-buttons">
-        <button @click="decreaseCount">-</button>
-        <button @click="increaseCount">+</button>
+      <span>Quantity</span>
+      <div class="quantity-wrapper">
+        <input v-model.number="uuidCount" readonly />
+        <div class="quantity-buttons">
+          <button @click="decreaseCount" class="btn">-</button>
+          <button @click="increaseCount" class="btn">+</button>
+        </div>
       </div>
     </div>
 
     <textarea v-model="uuidsText" readonly class="uuid-textarea"></textarea>
 
     <div class="actions">
-      <button @click="copyToClipboard">Copy</button>
-      <button @click="refreshUUIDs">Refresh</button>
+      <button @click="copyToClipboard" class="btn">Copy</button>
+      <button @click="refreshUUIDs" class="btn">Refresh</button>
     </div>
   </div>
 </template>
@@ -39,40 +46,37 @@ export default {
   name: 'UUIDGenerator',
   data() {
     return {
-      versions: ['NIL', 'v1', 'v4', 'v7'],
-      uuidVersion: 'v4', // По умолчанию v4
-      uuidCount: 1, // По умолчанию 1 UUID
-      uuids: [], // Массив для хранения UUID
-      uuidsText: '', // Строка для отображения UUID в textarea
+      versions: ['NIL', 'v1', 'v3', 'v4', 'v5'],
+      uuidVersion: 'v4',
+      uuidCount: 1,
+      uuids: [],
+      uuidsText: '',
     };
   },
   mounted() {
-    this.generateUUIDs(); // Генерация UUID при загрузке страницы
+    this.generateUUIDs();
   },
   methods: {
     setUUIDVersion(version) {
       this.uuidVersion = version;
-      this.generateUUIDs(); // Перегенерация при смене версии
+      this.generateUUIDs();
     },
     generateUUIDs() {
       this.uuids = [];
       for (let i = 0; i < this.uuidCount; i++) {
         let uuid = '';
         if (this.uuidVersion === 'NIL') {
-          uuid = '00000000-0000-0000-0000-000000000000'; // NIL UUID
+          uuid = '00000000-0000-0000-0000-000000000000';
         } else if (this.uuidVersion === 'v1') {
           uuid = uuidv1();
         } else if (this.uuidVersion === 'v4') {
           uuid = uuidv4();
-        } else if (this.uuidVersion === 'v7') {
-          uuid = this.generateUUIDv7(); // Пример для UUID v7
+        } else if (this.uuidVersion === 'v5') {
+          uuid = this.generateUUIDv7();
         }
         this.uuids.push(uuid);
       }
-      this.uuidsText = this.uuids.join('\n'); // Объединение UUID в строку
-    },
-    generateUUIDv7() {
-      return 'f7b1cf80-e88b-7dc4-8000-000000000000'; // Пример UUID v7
+      this.uuidsText = this.uuids.join('\n');
     },
     copyToClipboard() {
       navigator.clipboard.writeText(this.uuidsText).then(() => {
@@ -80,16 +84,16 @@ export default {
       });
     },
     refreshUUIDs() {
-      this.generateUUIDs(); // Обновление UUID при нажатии Refresh
+      this.generateUUIDs();
     },
     increaseCount() {
       this.uuidCount++;
-      this.generateUUIDs(); // Перегенерация при изменении количества
+      this.generateUUIDs();
     },
     decreaseCount() {
       if (this.uuidCount > 1) {
         this.uuidCount--;
-        this.generateUUIDs(); // Перегенерация при уменьшении количества
+        this.generateUUIDs();
       }
     },
   },
@@ -99,73 +103,91 @@ export default {
 <style scoped>
 .uuid-generator {
   width: 650px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
+  margin: auto;
+  /* padding: 20px; */
+  color: #fff;
 }
 
-.version-selection {
-  display: flex;
-  gap: 10px;
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.description {
+  font-size: 16px;
+  color: #a1a1a1;
   margin-bottom: 20px;
 }
 
-.version-selection button {
-  padding: 5px 15px;
-  border: 1px solid #007bff;
-  background-color: white;
-  color: #007bff;
-  cursor: pointer;
+.version-selection, .quantity-selection {
+  margin-bottom: 20px;
 }
 
-.version-selection .active {
+.version-selection span, .quantity-selection span {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.btn {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #555555;
+}
+
+.version-btn {
+  margin-right: 10px;
+}
+
+.version-btn.active {
   background-color: #007bff;
   color: white;
 }
 
-.quantity-selection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.quantity-selection input {
+  width: 60px;
+  text-align: center;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .quantity-buttons {
   display: flex;
-  margin-right: 5px;
+  gap: 10px;
 }
 
-.quantity-selection input {
-  text-align: center;
-  width: 50px;
-  padding: 5px;
+.quantity-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .uuid-textarea {
   width: 100%;
-  max-width: 500px;
-  height: 200px;
+  height: 100px;
   padding: 10px;
-  margin-bottom: 20px;
+  background-color: #333;
+  border-radius: 5px;
+  color: white;
+  /* margin-bottom: 20px; */
   resize: none;
+  border: none;
 }
 
 .actions {
   display: flex;
   gap: 10px;
-}
-
-.actions button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.actions button:hover {
-  background-color: #0056b3;
 }
 </style>

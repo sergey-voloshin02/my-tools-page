@@ -4,7 +4,7 @@
 
     <SearchBar ref="searchBar" />
 
-    <div class="main-container">
+    <div class="main-container" :class="{ 'menu-hidden': !isMenuVisible }">
       <!-- Левое меню без логотипа -->
       <aside class="left-menu" v-if="isMenuVisible">
         <ul>
@@ -41,9 +41,20 @@ export default {
       this.$refs.searchBar.openSearch();
     },
     toggleMenu() {
-      const leftMenu = document.querySelector('.left-menu');
-      leftMenu.classList.toggle('collapsed');
+      this.isMenuVisible = !this.isMenuVisible; // Переключаем видимость меню
     },
+    closeMenu() {
+      this.isMenuVisible = false; // Закрываем меню на мобильных устройствах
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768) {
+        this.isMenuVisible = false; // Автоматически закрываем меню на мобильных устройствах
+      } else {
+        this.isMenuVisible = true; // Отображаем меню на большом экране
+      }
+    });
   },
 };
 </script>
@@ -53,19 +64,18 @@ export default {
   font-family: 'Poppins', sans-serif;
 }
 
-button {
-  font-family: 'Poppins', sans-serif;
+body {
+  margin: 0;
 }
 
-input,
-select,
-textarea {
-  font-family: 'Poppins', sans-serif;
+main {
+  background-color: #222;
 }
 
 .main-container {
   display: flex;
   height: calc(100vh - 50px);
+  transition: margin-left 0.3s ease;
 }
 
 .left-menu {
@@ -73,6 +83,7 @@ textarea {
   width: 200px;
   padding: 20px;
   border-right: 1px solid #ddd;
+  transition: transform 0.3s ease;
 }
 
 .left-menu ul {
@@ -87,7 +98,7 @@ textarea {
 .left-menu a {
   text-decoration: none;
   color: #333;
-  font-weight: bold;
+  /* font-weight: bold; */
   transition: color 0.3s;
 }
 
@@ -97,20 +108,38 @@ textarea {
 
 .content {
   flex: 1;
+  transition: margin-left 0.3s ease;
 }
 
-.left-menu {
-  background-color: #f4f4f4;
-  width: 200px;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  transition: width 0.3s ease;
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .left-menu {
+    position: fixed;
+    left: -200px;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+    transition: transform 0.3s ease;
+  }
+
+  .main-container.menu-hidden .left-menu {
+    transform: translateX(-100%);
+  }
+
+  .main-container.menu-hidden .content {
+    margin-left: 0;
+  }
 }
 
 .left-menu.collapsed {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
+  transform: translateX(-100%);
 }
 
+.menu-hidden .left-menu {
+  transform: translateX(-100%);
+}
+
+.menu-hidden .content {
+  margin-left: 0;
+}
 </style>

@@ -219,7 +219,7 @@
     flex: 1;
     padding: 10px;
     border: none;
-    background-color: #444;
+    background-color: #333;
     color: white;
     border-radius: 5px;
     font-size: 18px;
@@ -260,20 +260,21 @@
     padding: 10px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #1e1e1e;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 5px;
   }
   
   .search-result:hover, .search-result.active {
-    background-color: #444;
+    background-color: #1fa54c;
     transform: scale(1.01);
   }
   
   .result-icon {
     margin-right: 10px;
     font-size: 20px;
-    color: #0fbf3a;
+    color: #ccc;
   }
   
   .result-info {
@@ -287,7 +288,7 @@
   
   .result-description {
     font-size: 12px;
-    color: #aaa;
+    color: #ccc;
   }
   </style>
   
