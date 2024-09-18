@@ -2,11 +2,15 @@
   <div class="app-layout">
     <!-- Левое меню с логотипом -->
     <aside class="left-menu" :class="{ 'collapsed': !isMenuVisible }">
-      <div class="logo">DevTools</div> <!-- Логотип -->
-      <ul>
-        <li><router-link to="/json-validator">JSON Validator</router-link></li>
-        <li><router-link to="/uuid-generator">UUID Generator</router-link></li>
-        <li><router-link to="/token-generator">Token Generator</router-link></li>
+      <div class="logo" :class="{ 'collapsed': !isMenuVisible }"><router-link to="/">DevTools</router-link></div>
+      <!-- Логотип -->
+      <ul class="list">
+        <li class="list-element" :class="{ 'collapsed': !isMenuVisible }"><router-link to="/json-validator">JSON
+            Validator</router-link></li>
+        <li class="list-element" :class="{ 'collapsed': !isMenuVisible }"><router-link to="/uuid-generator">UUID
+            Generator</router-link></li>
+        <li class="list-element" :class="{ 'collapsed': !isMenuVisible }"><router-link to="/token-generator">Token
+            Generator</router-link></li>
       </ul>
     </aside>
 
@@ -18,7 +22,8 @@
           <i class="fas fa-bars"></i> <!-- Иконка открытия/закрытия меню -->
         </button>
         <router-link to="/" class="home-btn">
-          <i class="fas fa-home"></i>
+          <!-- <i class="fas fa-home"></i> -->
+          <img src="@/assets/house-svgrepo-com.svg" alt="Home" class="home-icon" />
         </router-link>
         <MainNavbar @open-search="openSearch" />
       </header>
@@ -72,6 +77,7 @@ body {
 main {
   background-color: #222;
 }
+
 /* Основная структура */
 .app-layout {
   display: flex;
@@ -80,7 +86,7 @@ main {
 
 /* Левое меню */
 .left-menu {
-  background-color: #333;
+  background-color: #222;
   color: white;
   width: 190px;
   padding: 20px;
@@ -94,13 +100,28 @@ main {
   overflow: hidden;
 }
 
+.list-element {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.list-element.collapsed,
+.logo.collapsed {
+  display: none;
+}
+
 .left-menu ul {
   list-style: none;
   padding: 0;
+
 }
 
 .left-menu ul li {
   margin-bottom: 15px;
+
 }
 
 .left-menu ul li a {
@@ -109,15 +130,25 @@ main {
   transition: color 0.3s ease;
 }
 
-.left-menu ul li a:hover {
+/* .left-menu ul li a:hover {
   color: #007bff;
-}
+} */
 
 .logo {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  text-decoration: none;
 }
+
+.logo>a {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #ccc;
+}
+
 
 /* Основной контент */
 .content {
@@ -160,6 +191,10 @@ main {
 
 .home-btn:hover {
   color: #007bff;
+}
+
+.list-element:hover {
+  background-color: #333;
 }
 
 /* Основная часть контента */

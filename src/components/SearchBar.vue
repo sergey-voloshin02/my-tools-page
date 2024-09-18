@@ -222,7 +222,8 @@
     background-color: #333;
     color: white;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
+    outline: none;
   }
   
   .search-bar input::placeholder {

@@ -149,7 +149,7 @@ h2 {
 }
 
 .version-btn.active {
-  background-color: #007bff;
+  background-color: rgb(0 123 255 / 65%);
   color: white;
 }
 

@@ -65,7 +65,7 @@
     background-color: #222;
     padding: 15px 20px 10px 20px;
     color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
     width: 100%;
   }
   
@@ -101,8 +101,8 @@
     align-items: center;
     background-color: #333;
     border-radius: 5px;
-    padding: 5px 10px;
-    width: 60%; /* Увеличено для более широкого поиска */
+    padding: 9px 10px;
+    width: 60%; 
   }
   
   .search-input i {
@@ -116,6 +116,7 @@
     color: white;
     flex: 1;
     cursor: pointer;
+    outline: none;
   }
   
   .search-input input::placeholder {

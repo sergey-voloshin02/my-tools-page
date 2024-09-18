@@ -1,6 +1,9 @@
 <template>
   <div class="json-validator">
-    <h4 style="display:flex">To format and validate your JSON, just copy + paste it below:</h4>
+    <h2>JSON Validator</h2>
+    <p class="description">
+      To format and validate your JSON, just copy + paste it below:
+    </p>
     <div class="textarea-wrapper">
       <div class="line-numbers" ref="lineNumbers"></div>
       <textarea v-model="jsonInput" @input="updateLineNumbers" ref="textarea" placeholder="Paste your JSON here..."
@@ -115,25 +118,41 @@ export default {
 </script>
 
 <style scoped>
+
+h2 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.description {
+  font-size: 16px;
+  color: #a1a1a1;
+  margin-bottom: 40px;
+}
+
 .json-validator {
   display: flex;
+  
   flex-direction: column;
   height: 100vh;
   margin: 0;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   box-sizing: border-box;
-  text-align: center;
+  width: 90%;
+  margin: auto;
 }
 
 .textarea-wrapper {
   display: flex;
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 60%;
   margin-bottom: 20px;
 }
 
 .line-numbers {
+  padding-top: 10px;
   background-color: #f0f0f0;
   color: #888;
   text-align: right;
@@ -145,9 +164,8 @@ export default {
   line-height: 1.6;
   box-sizing: border-box;
   overflow: hidden;
-  /* Убираем скролл-бар */
-  height: 100%;
-  /* Устанавливаем высоту на 100% от высоты контейнера .textarea-wrapper */
+  height: 60%;
+  background: #333;
 }
 
 .line-numbers div {
@@ -161,8 +179,16 @@ textarea {
   font-family: monospace;
   line-height: 1.6;
   box-sizing: border-box;
-  height: 100%;
+  height: 60%;
   overflow-y: auto;
+  overflow-x: scroll;
+  background:#444;
+  color: white;
+  text-wrap: nowrap;
+}
+
+textarea:focus-visible{
+  outline: none;
 }
 
 .actions {
@@ -179,13 +205,21 @@ textarea {
 }
 
 .action-button {
-  background-color: #007bff;
-  color: white;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.action-button:disabled {
+/* .action-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+} */
+.action-button:hover {
+  background-color: #555555;
 }
 
 .success {

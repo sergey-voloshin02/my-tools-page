@@ -36,7 +36,7 @@ export default {
 .home-page {
   display: flex;
   color: #fff;
-  background-color: #121212;
+  /* background-color: #121212; */
 }
 
 .content {
