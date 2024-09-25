@@ -6,6 +6,9 @@
       The number of possible UUIDs is 2<sup>128</sup> or about 3.4×10^38 (which is a lot!).
     </p>
 
+    <!-- Компонент уведомления -->
+    <AppNotification v-if="showNotification" message="UUIDs copied to clipboard!" />
+
     <div class="version-selection">
       <span>UUID version</span>
       <button
@@ -41,16 +44,21 @@
 
 <script>
 import { v4 as uuidv4, v1 as uuidv1 } from 'uuid';
+import AppNotification from './AppNotification.vue'; // Импортируем компонент уведомления
 
 export default {
   name: 'UUIDGenerator',
+  components: {
+    AppNotification,
+  },
   data() {
     return {
-      versions: ['NIL', 'v1', 'v3', 'v4', 'v5'],
+      versions: ['NIL', 'v1', 'v4'],
       uuidVersion: 'v4',
       uuidCount: 1,
       uuids: [],
       uuidsText: '',
+      showNotification: false, // Для отображения уведомления
     };
   },
   mounted() {
@@ -71,16 +79,17 @@ export default {
           uuid = uuidv1();
         } else if (this.uuidVersion === 'v4') {
           uuid = uuidv4();
-        } else if (this.uuidVersion === 'v5') {
-          uuid = this.generateUUIDv7();
-        }
+        } 
         this.uuids.push(uuid);
       }
       this.uuidsText = this.uuids.join('\n');
     },
     copyToClipboard() {
       navigator.clipboard.writeText(this.uuidsText).then(() => {
-        alert('UUIDs copied to clipboard!');
+        this.showNotification = true; // Показываем уведомление
+        setTimeout(() => {
+          this.showNotification = false; // Скрываем через 3 секунды
+        }, 3000);
       });
     },
     refreshUUIDs() {
@@ -101,10 +110,10 @@ export default {
 </script>
 
 <style scoped>
+/* Оставляем стили как есть */
 .uuid-generator {
   width: 650px;
   margin: auto;
-  /* padding: 20px; */
   color: #fff;
 }
 
@@ -181,7 +190,6 @@ h2 {
   background-color: #333;
   border-radius: 5px;
   color: white;
-  /* margin-bottom: 20px; */
   resize: none;
   border: none;
 }

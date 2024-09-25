@@ -22,8 +22,7 @@
           <i class="fas fa-bars"></i> <!-- Иконка открытия/закрытия меню -->
         </button>
         <router-link to="/" class="home-btn">
-          <!-- <i class="fas fa-home"></i> -->
-          <img src="@/assets/house-svgrepo-com.svg" alt="Home" class="home-icon" />
+          <i class="fas fa-home"></i>
         </router-link>
         <MainNavbar @open-search="openSearch" />
       </header>
@@ -187,10 +186,12 @@ main {
   cursor: pointer;
   font-size: 24px;
   margin-right: 20px;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .home-btn:hover {
-  color: #007bff;
+  background-color: #333;
 }
 
 .list-element:hover {
