@@ -1,4 +1,5 @@
 <template>
+
   <div class="app-layout">
     <!-- Левое меню с логотипом -->
     <aside class="left-menu" :class="{ 'collapsed': !isMenuVisible }">
@@ -32,7 +33,9 @@
 
       <!-- Основное содержимое -->
       <div class="content-body">
-        <router-view />
+        <n-notification-provider :max="4" placement="bottom-right">
+          <router-view />
+        </n-notification-provider>
       </div>
     </main>
   </div>

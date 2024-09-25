@@ -6,18 +6,10 @@
       The number of possible UUIDs is 2<sup>128</sup> or about 3.4×10^38 (which is a lot!).
     </p>
 
-    <!-- Компонент уведомления -->
-    <AppNotification v-if="showNotification" message="UUIDs copied to clipboard!" />
-
     <div class="version-selection">
       <span>UUID version</span>
-      <button
-        v-for="version in versions"
-        :key="version"
-        @click="setUUIDVersion(version)"
-        :class="{ active: version === uuidVersion }"
-        class="btn version-btn"
-      >
+      <button v-for="version in versions" :key="version" @click="setUUIDVersion(version)"
+        :class="{ active: version === uuidVersion }" class="btn version-btn">
         {{ version }}
       </button>
     </div>
@@ -44,12 +36,13 @@
 
 <script>
 import { v4 as uuidv4, v1 as uuidv1 } from 'uuid';
-import AppNotification from './AppNotification.vue'; // Импортируем компонент уведомления
+import { useNotification } from 'naive-ui';
 
 export default {
   name: 'UUIDGenerator',
-  components: {
-    AppNotification,
+  setup() {
+    const notification = useNotification();
+    return { notification };
   },
   data() {
     return {
@@ -58,7 +51,6 @@ export default {
       uuidCount: 1,
       uuids: [],
       uuidsText: '',
-      showNotification: false, // Для отображения уведомления
     };
   },
   mounted() {
@@ -79,17 +71,17 @@ export default {
           uuid = uuidv1();
         } else if (this.uuidVersion === 'v4') {
           uuid = uuidv4();
-        } 
+        }
         this.uuids.push(uuid);
       }
       this.uuidsText = this.uuids.join('\n');
     },
     copyToClipboard() {
       navigator.clipboard.writeText(this.uuidsText).then(() => {
-        this.showNotification = true; // Показываем уведомление
-        setTimeout(() => {
-          this.showNotification = false; // Скрываем через 3 секунды
-        }, 3000);
+        this.notification.success({
+          content: 'UUIDs copied to clipboard!',
+          duration: 2000
+        });
       });
     },
     refreshUUIDs() {
@@ -129,11 +121,13 @@ h2 {
   margin-bottom: 20px;
 }
 
-.version-selection, .quantity-selection {
+.version-selection,
+.quantity-selection {
   margin-bottom: 20px;
 }
 
-.version-selection span, .quantity-selection span {
+.version-selection span,
+.quantity-selection span {
   display: block;
   font-weight: 500;
   margin-bottom: 8px;
